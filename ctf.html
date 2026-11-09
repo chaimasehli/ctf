@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="map" content="QWERTYUIOPASDFGHJKLZXCVBNM" />
+    <title>Ghost Protocol</title>
+
+    <style>
+      body {
+        background: #080808;
+        color: #00ff00;
+        font-family: monospace;
+        text-align: center;
+        padding-top: 70px;
+      }
+
+      .box {
+        display: inline-block;
+        border: 1px solid #00ff00;
+        padding: 35px;
+        background: #111;
+        border-radius: 8px;
+      }
+
+      input {
+        background: black;
+        color: #00ff00;
+        border: 1px solid #00ff00;
+        padding: 12px;
+        margin: 15px;
+        font-family: monospace;
+        width: 250px;
+      }
+
+      button {
+        background: #00ff00;
+        color: black;
+        padding: 10px 25px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- A machine never stored letters. It stored a table. -->
+    <!-- 85 73 71 76 90 -->
+    <div class="box" data-q="QVRO">
+      <!-- 64 -->
+      <h2>☠ GHOST PROTOCOL ☠</h2>
+
+      <p>A hidden flag is waiting to be discovered.</p>
+      <p>Find it. Submit it.</p>
+
+      <input
+        type="text"
+        id="a"
+        placeholder="CTF{...}"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <br />
+
+      <button id="b">SUBMIT FLAG</button>
+
+      <h3 id="r"></h3>
+    </div>
+
+    <script>
+      (function () {
+        function f(s) {
+          var x = 0xdeadbeef,
+            y = 0x41c6ce57;
+          for (var i = 0; i < s.length; i++) {
+            var c = s.charCodeAt(i);
+            x = Math.imul(x ^ c, 2654435761);
+            y = Math.imul(y ^ c, 1597334677);
+          }
+          x = Math.imul(x ^ (x >>> 16), 2246822507);
+          x ^= Math.imul(y ^ (y >>> 13), 3266489909);
+          y = Math.imul(y ^ (y >>> 16), 2246822507);
+          y ^= Math.imul(x ^ (x >>> 13), 3266489909);
+          return 4294967296 * (2097151 & y) + (x >>> 0);
+        }
+        document.getElementById("b").addEventListener("click", function () {
+          var v = document.getElementById("a").value.trim();
+          var out = document.getElementById("r");
+
+          if (v === "") {
+            out.innerText = "ERROR: NO FLAG DETECTED.";
+          } else if (f(v) === 2875667980739617) {
+            out.innerText = "ACCESS GRANTED! GHOST PROTOCOL COMPLETED.";
+          } else {
+            out.innerText = "ACCESS DENIED. KEEP INVESTIGATING.";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
